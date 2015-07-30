@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        style="@style/add_1_style"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:id="@+id/title" />
+
+    <EditText
+        android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_title" />
+
+    <TextView
+        android:layout_below="@+id/add_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/add_1_style"
+        android:text="@string/details"
+        android:id="@+id/details" />
+
+    <EditText
+        android:layout_below="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_details" />
+
+    <Switch
+        android:layout_below="@+id/add_details"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/add_1_style"
+        android:layout_marginRight="30dp"
+        android:id="@+id/image_switch"
+        android:layout_gravity="right" />
+
+    <TextView
+        android:layout_below="@+id/add_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/add_1_style"
+        android:text="@string/image"
+        android:id="@+id/image" />
+    <Button
+        android:layout_width="match_parent"
+        android:textColor="@color/white"
+        android:layout_height="@dimen/button_height"
+        android:background="@color/light_blue"
+        android:onClick="openAddNext"
+        android:layout_alignParentBottom="true"
+        android:textSize="30dp"
+        android:text="@string/next"/>
+
+</RelativeLayout>

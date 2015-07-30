@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TimePicker
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:headerBackground="@color/light_blue"
+        android:elevation="7dp"
+        android:amPmBackgroundColor="@color/light_blue"
+        android:numbersSelectorColor="@color/light_blue"
+        android:id="@+id/timePicker"
+        style="@style/AppTheme"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repeat"
+        style="@style/add_1_style"
+        android:id="@+id/repeat"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="64dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/daily"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="@dimen/top_margin"
+        style="@style/repeat_details"
+        android:id="@+id/daily"
+        android:layout_below="@+id/repeat"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/repeat_details"
+        android:text="@string/weekly"
+        android:id="@+id/weekly"
+        android:layout_toRightOf="@+id/daily"
+        android:layout_marginLeft="@dimen/left_margin"
+        android:layout_alignBottom="@+id/daily"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/repeat_details"
+        android:layout_toRightOf="@+id/weekly"
+        android:layout_alignBottom="@+id/weekly"
+        android:layout_marginLeft="@dimen/left_margin"
+        android:text="@string/monthly"
+        android:id="@+id/monthly"
+         />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1"
+        android:layout_marginRight="20dp"
+        android:layout_alignTop="@+id/repeat"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/save"
+        android:textSize="30sp"
+        android:onClick="setupReminder"
+        android:textColor="@color/white"
+        android:background="@color/light_blue"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

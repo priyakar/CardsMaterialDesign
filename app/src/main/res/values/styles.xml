@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimaryDark">@color/light_blue</item>
+        <item name="android:colorAccent">@color/light_blue</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Button">
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:translationZ">2dp</item>
+    </style>
+    <style name="add_1_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="repeat_details">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+</resources>
