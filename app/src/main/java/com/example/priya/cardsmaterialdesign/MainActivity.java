@@ -29,13 +29,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view);
-
+//        if (getIntent().getExtras() != null) {
+//            results.add(new DataObject(getIntent().getExtras().getString("Title"),
+//                    getIntent().getExtras().getString("Details")));
+//            mAdapter.notifyDataSetChanged();
+//        }
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyRecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
+
         SwipeableRecyclerView swipeTouchListener =
                 new SwipeableRecyclerView(mRecyclerView,
                         new SwipeableRecyclerView.SwipeListener() {
@@ -82,10 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
     //OnClick add button
     public void addReminder (View view){
-        results.add(new DataObject("1", "second"));
         Intent intent = new Intent(this, AddReminder.class);
         startActivity(intent);
-        mAdapter.notifyDataSetChanged();
     }
     private ArrayList<DataObject> getDataSet() {
         results = new ArrayList<>();
@@ -94,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     "Secondary " + index);
             results.add(index, obj);
         }*/
-        results.add(new DataObject("0","first"));
         return results;
     }
 

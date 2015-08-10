@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddReminder" />
+        <activity android:name=".AddExtraReminder" />
     </application>
 
 </manifest>
