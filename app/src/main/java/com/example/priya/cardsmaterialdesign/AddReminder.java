@@ -40,7 +40,10 @@ public class AddReminder extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
+                    loadImage.setVisibility(View.VISIBLE);
                     loadImageFromMemory();
+                } else{
+                    loadImage.setVisibility(View.GONE);
                 }
             }
         });
