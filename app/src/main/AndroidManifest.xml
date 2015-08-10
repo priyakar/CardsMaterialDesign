@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".AddReminder" />
         <activity android:name=".AddExtraReminder" />
+        <activity android:name=".PopupReminder"
+            android:theme="@style/DialogNoTitleBar"/>
         <receiver android:name=".Alarm" android:process=":remote" />
     </application>
 

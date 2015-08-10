@@ -66,6 +66,7 @@ public class AddExtraReminder extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP  , alarm_time , operation);
         MainActivity.results.add(new DataObject(hour + " " + min, title));
         MainActivity.mAdapter.notifyDataSetChanged();
+        finish();
 
     }
 }
