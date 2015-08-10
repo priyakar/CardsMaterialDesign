@@ -10,5 +10,6 @@ public class PopupReminder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_popup_reminder);
     }
 }

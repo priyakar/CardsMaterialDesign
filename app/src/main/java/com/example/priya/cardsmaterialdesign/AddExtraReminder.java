@@ -67,6 +67,5 @@ public class AddExtraReminder extends AppCompatActivity {
         MainActivity.results.add(new DataObject(hour + " " + min, title));
         MainActivity.mAdapter.notifyDataSetChanged();
         finish();
-
     }
 }
