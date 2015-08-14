@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,14 +57,14 @@ public class AddExtraReminder extends AppCompatActivity {
 
     public void setupReminder(View view) {
         Intent intent = new Intent(this, Alarm.class);
-        PendingIntent operation = PendingIntent.getBroadcast(AddExtraReminder.this, 0, intent, 0);
+        PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, hour - calendar.get(Calendar.HOUR_OF_DAY));
-        calendar.add(Calendar.MINUTE, min - calendar.get(Calendar.MINUTE));
-        long alarm_time = calendar.getTimeInMillis()/1000;
+        calendar.set(Calendar.HOUR_OF_DAY, hour );
+        calendar.set(Calendar.MINUTE, min );
+        long alarm_time = calendar.getTimeInMillis();
         Log.e("time changes", ""+alarm_time);
-        alarmManager.set(AlarmManager.RTC_WAKEUP  , alarm_time , operation);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, alarm_time, operation);
         MainActivity.results.add(new DataObject(hour + " " + min, title));
         MainActivity.mAdapter.notifyDataSetChanged();
         finish();
