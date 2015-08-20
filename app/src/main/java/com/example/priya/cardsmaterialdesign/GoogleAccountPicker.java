@@ -3,10 +3,13 @@ package com.example.priya.cardsmaterialdesign;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
@@ -14,48 +17,67 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
-public class GoogleAccountPicker extends AppCompatActivity  implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
-    String mEmail;
-    String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
-    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class GoogleAccountPicker extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int RC_SIGN_IN = 0;
     private GoogleApiClient apiClient;
-    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
+    /* Is there a ConnectionResult resolution in progress? */
+    private boolean mIsResolving = false;
 
+    /* Should we automatically resolve ConnectionResults when possible? */
+    private boolean mShouldResolve = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_account_picker);
-        if (checkPlayServices()) {
-            pickUserAccount();
+        ButterKnife.inject(this);
+        if(checkPlayServices()){
+            buildGoogleApiClient();
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_CODE_PICK_ACCOUNT) {
-            // Receiving a result from the AccountPicker
-            if (resultCode == RESULT_OK) {
-                mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                // With the account name acquired, go get the auth token
-                getUsername();
-            } else if (resultCode == RESULT_CANCELED) {
-                // The account picker dialog closed without selecting an account.
-                // Notify users that they must pick an account to proceed.
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-            }
-        } else if ((requestCode == REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR)
-                && resultCode == RESULT_OK) {
-            // Receiving a result that follows a GoogleAuthException, try auth again
-            getUsername();
-        }
-        // Handle the result from exceptions
+    @OnClick(R.id.sign_in_button)
+    public void onSignInButtonClick() {
+        mShouldResolve = true;
+        apiClient.connect();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+
+        if (requestCode == RC_SIGN_IN) {
+            // If the error resolution was not successful we should not resolve further.
+            if (resultCode != RESULT_OK) {
+                mShouldResolve = false;
+            }
+            mIsResolving = false;
+            apiClient.connect();
+        }
+    }
+
+    private void buildGoogleApiClient() {
+        apiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .build();
+    }
+
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
@@ -67,62 +89,20 @@ public class GoogleAccountPicker extends AppCompatActivity  implements
         }
         return true;
     }
-    private void pickUserAccount() {
-        String[] accountTypes = new String[]{"com.google"};
-        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                accountTypes, false, null, null, null, null);
-        startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
-    }
 
-    private void buildGoogleApiClient() {
-        apiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
-
-    }
-
-    /**
-     * This method is a hook for background threads and async tasks that need to
-     * provide the user a response UI when an exception occurs.
-     */
-    public void handleException(final Exception e) {
-        // Because this call comes from the AsyncTask, we must ensure that the following
-        // code instead executes on the UI thread.
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (e instanceof GooglePlayServicesAvailabilityException) {
-                    // The Google Play services APK is old, disabled, or not present.
-                    // Show a dialog created by Google Play services that allows
-                    // the user to update the APK
-                    int statusCode = ((GooglePlayServicesAvailabilityException)e)
-                            .getConnectionStatusCode();
-                    Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode,
-                            GoogleAccountPicker.this,
-                            REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
-                    dialog.show();
-                } else if (e instanceof UserRecoverableAuthException) {
-                    // Unable to authenticate, such as when the user has not yet granted
-                    // the app access to the account, but the user can fix this.
-                    // Forward the user to an activity in Google Play services.
-                    Intent intent = ((UserRecoverableAuthException)e).getIntent();
-                    startActivityForResult(intent,
-                            REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
-                }
-            }
-        });
-    }
-
-    private void getUsername() {
-        if (mEmail == null) {
-            pickUserAccount();
-        } else {
-            new GetUsernameTask(GoogleAccountPicker.this, mEmail, SCOPE).execute();
-               // Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
-        }
-    }
     @Override
     public void onConnected(Bundle bundle) {
-
+        Log.e(TAG, "onConnected:" + bundle);
+        mShouldResolve = false;
+        if (Plus.PeopleApi.getCurrentPerson(apiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(apiClient);
+            String personName = currentPerson.getDisplayName();
+            String personPhoto = currentPerson.getImage().getUrl();
+            String personGooglePlusProfile = currentPerson.getUrl();
+            String email = Plus.AccountApi.getAccountName(apiClient);
+            Toast.makeText(this,personName+" "+email,Toast.LENGTH_LONG).show();
+        }
+        // Show the signed-in UI
     }
 
     @Override
@@ -132,14 +112,42 @@ public class GoogleAccountPicker extends AppCompatActivity  implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
 
+        if (!mIsResolving && mShouldResolve) {
+            if (connectionResult.hasResolution()) {
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIsResolving = true;
+                } catch (IntentSender.SendIntentException e) {
+                    Log.e(TAG, "Could not resolve ConnectionResult.", e);
+                    mIsResolving = false;
+                    apiClient.connect();
+                }
+            } else {
+                // Could not resolve the connection result, show the user an
+                // error dialog.
+                Toast.makeText(this, "Invalid Account", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            // Show the signed-out UI
+            Toast.makeText(this, "You have Successfully Signed Out", Toast.LENGTH_LONG).show();
+            Log.e("connection failed", connectionResult.toString());
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (apiClient != null){
+        if (apiClient != null) {
             apiClient.connect();
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        apiClient.disconnect();
+    }
+
 }
