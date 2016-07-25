@@ -1,4 +1,4 @@
-package com.example.priya.cardsmaterialdesign;
+package com.example.priya.cardsmaterialdesign.custom;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

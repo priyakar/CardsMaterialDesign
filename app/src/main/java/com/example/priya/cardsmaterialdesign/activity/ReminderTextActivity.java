@@ -1,4 +1,4 @@
-package com.example.priya.cardsmaterialdesign;
+package com.example.priya.cardsmaterialdesign.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+
+import com.example.priya.cardsmaterialdesign.R;
+import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
 
 import java.util.List;
 
@@ -19,13 +21,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
 
-public class AddReminder extends AppCompatActivity {
+public class ReminderTextActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
     private String selectedImagePath;
     @InjectViews({R.id.add_title, R.id.add_details})
     List<EditText> addDetails;
-    ReminderDetails reminderDetails;
+    ReminderDetailsModel reminderDetails;
     @InjectView(R.id.image_switch)
     Switch imageSwitch;
     @InjectView(R.id.load_image)
@@ -70,11 +72,11 @@ public class AddReminder extends AppCompatActivity {
     }
 
     public void openAddNext(View view){
-        reminderDetails = new ReminderDetails(new DataObject(addDetails.get(0).getText().toString(),
-                addDetails.get(1).getText().toString()));
-        Intent intent = new Intent(this, AddExtraReminder.class);
-        intent.putExtra("Title", reminderDetails.getDataObject().getmText1());
-        intent.putExtra("Details", reminderDetails.getDataObject().getmText2());
+        Intent intent = new Intent(this, ReminderTimeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("Title", addDetails.get(0).getText().toString());
+        bundle.putString("Details", addDetails.get(1).getText().toString());
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }

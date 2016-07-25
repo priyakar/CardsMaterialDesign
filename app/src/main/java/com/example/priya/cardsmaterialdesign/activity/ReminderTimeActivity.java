@@ -1,32 +1,31 @@
-package com.example.priya.cardsmaterialdesign;
+package com.example.priya.cardsmaterialdesign.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TimePicker;
 
+import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
+import com.example.priya.cardsmaterialdesign.receiver.Alarm;
+import com.example.priya.cardsmaterialdesign.R;
+
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 
-public class AddExtraReminder extends AppCompatActivity {
+public class ReminderTimeActivity extends AppCompatActivity {
     String title;
     String details;
 
     @InjectView(R.id.timePicker)
     TimePicker timePicker;
-    @InjectView(R.id.set_time)
-    Button setTime;
 
     int hour, min;
 
@@ -47,14 +46,9 @@ public class AddExtraReminder extends AppCompatActivity {
                 Log.e("time changes", ""+hour+" "+min);
             }
         });
-        setTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
+    @OnClick(R.id.save_reminder)
     public void setupReminder(View view) {
         Intent intent = new Intent(this, Alarm.class);
         PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, 0);
@@ -64,8 +58,13 @@ public class AddExtraReminder extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, min );
         long alarm_time = calendar.getTimeInMillis();
         Log.e("time changes", ""+alarm_time);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, alarm_time, operation);
-        MainActivity.results.add(new DataObject(hour + " " + min, title));
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_time, operation);
+        ReminderDetailsModel model = new ReminderDetailsModel();
+        model.setTitle(title);
+        model.setDetails(details);
+        model.setHour(hour);
+        model.setMin(min);
+        MainActivity.results.add(model);
         MainActivity.mAdapter.notifyDataSetChanged();
         finish();
     }

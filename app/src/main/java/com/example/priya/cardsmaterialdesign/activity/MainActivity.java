@@ -1,20 +1,22 @@
-package com.example.priya.cardsmaterialdesign;
+package com.example.priya.cardsmaterialdesign.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.priya.cardsmaterialdesign.adapter.MyRecyclerViewAdapter;
+import com.example.priya.cardsmaterialdesign.R;
+import com.example.priya.cardsmaterialdesign.custom.SwipeableRecyclerView;
+import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
+
 import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,16 +31,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view);
-//        if (getIntent().getExtras() != null) {
-//            results.add(new DataObject(getIntent().getExtras().getString("Title"),
-//                    getIntent().getExtras().getString("Details")));
-//            mAdapter.notifyDataSetChanged();
-//        }
+        ButterKnife.inject(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
+        results = new ArrayList<ReminderDetailsModel>();
+        mAdapter = new MyRecyclerViewAdapter(results);
         mRecyclerView.setAdapter(mAdapter);
 
         SwipeableRecyclerView swipeTouchListener =
@@ -72,32 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
-                .MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.e(LOG_TAG, " Clicked on Item " + position);
-            }
-        });
-
-    }
     //OnClick add button
-    public void addReminder (View view){
-        Intent intent = new Intent(this, AddReminder.class);
+    @OnClick(R.id.add_button)
+    public void onAddReminderButtonClick (){
+        Intent intent = new Intent(this, ReminderTextActivity.class);
         startActivity(intent);
     }
-    private ArrayList<DataObject> getDataSet() {
-        results = new ArrayList<>();
-       /* for (int index = 0; index < 10; index++) {
-            DataObject obj = new DataObject("Some Primary Text " + index,
-                    "Secondary " + index);
-            results.add(index, obj);
-        }*/
-        return results;
-    }
-
 }

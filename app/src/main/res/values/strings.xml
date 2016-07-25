@@ -12,4 +12,5 @@
     <string name="monthly">Monthly</string>
     <string name="save">SAVE</string>
     <string name="title_activity_google_account_picker">GoogleAccountPicker</string>
+    <string name="done">DONE</string>
 </resources>
