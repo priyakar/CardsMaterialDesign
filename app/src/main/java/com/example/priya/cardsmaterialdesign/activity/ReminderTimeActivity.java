@@ -21,7 +21,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class ReminderTimeActivity extends AppCompatActivity {
+public class ReminderTimeActivity extends BaseActivity {
     String title;
     String details;
 
@@ -65,7 +65,7 @@ public class ReminderTimeActivity extends AppCompatActivity {
         model.setDetails(details);
         model.setHour(hour);
         model.setMin(min);
-        RealmTransactionFactory.createReminder(model);
+        RealmTransactionFactory.createReminder(mAdapter ,model);
         finish();
     }
 }

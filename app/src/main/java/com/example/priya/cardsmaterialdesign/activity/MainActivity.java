@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.priya.cardsmaterialdesign.RealmTransactionFactory;
 import com.example.priya.cardsmaterialdesign.adapter.MyRecyclerViewAdapter;
 import com.example.priya.cardsmaterialdesign.R;
 import com.example.priya.cardsmaterialdesign.custom.SwipeableRecyclerView;
@@ -16,17 +17,15 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
-    public static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
-    public RealmResults<ReminderDetailsModel> results;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +36,18 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(this, results);
         mRecyclerView.setAdapter(mAdapter);
+        results = RealmTransactionFactory.getAllReminders();
+        mAdapter = new MyRecyclerViewAdapter(this, results);
+
+        if (results != null) {
+            results.addChangeListener(new RealmChangeListener<RealmResults<ReminderDetailsModel>>() {
+                @Override
+                public void onChange(RealmResults<ReminderDetailsModel> element) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+        }
 
         SwipeableRecyclerView swipeTouchListener =
                 new SwipeableRecyclerView(mRecyclerView,

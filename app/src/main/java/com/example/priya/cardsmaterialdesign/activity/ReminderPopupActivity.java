@@ -15,7 +15,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import io.realm.RealmResults;
 
-public class ReminderPopupActivity extends AppCompatActivity {
+public class ReminderPopupActivity extends BaseActivity {
 
     ReminderDetailsModel reminder;
 
@@ -39,7 +39,7 @@ public class ReminderPopupActivity extends AppCompatActivity {
 
     @OnClick(R.id.dismiss_reminder)
     public void onDismissReminderButtonClick() {
-        RealmTransactionFactory.removeReminder(reminderTitle.getText().toString());
+        RealmTransactionFactory.removeReminder(mAdapter, reminderTitle.getText().toString());
         finish();
     }
 }

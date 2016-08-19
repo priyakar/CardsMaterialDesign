@@ -32,8 +32,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     public MyRecyclerViewAdapter(Context context, RealmResults<ReminderDetailsModel> myDataset) {
-        mDataset = myDataset;
         inflater = LayoutInflater.from(context);
+        setResults(myDataset);
     }
 
     @Override
@@ -63,4 +63,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
     }
 
+    public void setResults(RealmResults<ReminderDetailsModel> mDataset) {
+        this.mDataset = mDataset;
+        notifyDataSetChanged();
+    }
 }
