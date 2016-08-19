@@ -1,9 +1,15 @@
 package com.example.priya.cardsmaterialdesign.model;
 
-public class ReminderDetailsModel {
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.PrimaryKey;
 
+public class ReminderDetailsModel extends RealmObject {
+
+
+    private String title;
+    private String details, imageUrl;
     private int hour, min;
-    private String title, details;
 
     public ReminderDetailsModel(){
 
@@ -39,6 +45,14 @@ public class ReminderDetailsModel {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
 

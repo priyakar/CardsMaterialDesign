@@ -12,12 +12,12 @@ import com.example.priya.cardsmaterialdesign.R;
 import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
 import com.example.priya.cardsmaterialdesign.utils.TimeFormatUtils;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private ArrayList<ReminderDetailsModel> mDataset;
-    private Context context;
+    private RealmResults<ReminderDetailsModel> mDataset;
+    LayoutInflater inflater;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView label;
@@ -31,29 +31,36 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
     }
 
-    public MyRecyclerViewAdapter(ArrayList<ReminderDetailsModel> myDataset) {
+    public MyRecyclerViewAdapter(Context context, RealmResults<ReminderDetailsModel> myDataset) {
         mDataset = myDataset;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_main, parent, false);
+                .inflate(R.layout.reminder_item, parent, false);
 
         return new DataObjectHolder(view);
     }
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.dateTime.setText(mDataset.get(position).getTitle());
-        holder.label.setText(TimeFormatUtils.getFormattedTime(mDataset.get(position).getHour(),
-                mDataset.get(position).getMin()));
+        if (mDataset != null) {
+            holder.dateTime.setText(mDataset.get(position).getTitle());
+            holder.label.setText(TimeFormatUtils.getFormattedTime(mDataset.get(position).getHour(),
+                    mDataset.get(position).getMin()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        if (mDataset != null) {
+            return mDataset.size();
+        } else {
+            return 0;
+        }
     }
 
 }

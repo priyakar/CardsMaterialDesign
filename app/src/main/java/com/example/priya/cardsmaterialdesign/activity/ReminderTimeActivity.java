@@ -9,9 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
+import com.example.priya.cardsmaterialdesign.R;
+import com.example.priya.cardsmaterialdesign.RealmTransactionFactory;
 import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
 import com.example.priya.cardsmaterialdesign.receiver.Alarm;
-import com.example.priya.cardsmaterialdesign.R;
 
 import java.util.Calendar;
 
@@ -43,7 +44,7 @@ public class ReminderTimeActivity extends AppCompatActivity {
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 hour = hourOfDay;
                 min = minute;
-                Log.e("time changes", ""+hour+" "+min);
+                Log.e("time changes", "" + hour + " " + min);
             }
         });
     }
@@ -54,18 +55,17 @@ public class ReminderTimeActivity extends AppCompatActivity {
         PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour );
-        calendar.set(Calendar.MINUTE, min );
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
         long alarm_time = calendar.getTimeInMillis();
-        Log.e("time changes", ""+alarm_time);
+        Log.e("time changes", "" + alarm_time);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_time, operation);
         ReminderDetailsModel model = new ReminderDetailsModel();
         model.setTitle(title);
         model.setDetails(details);
         model.setHour(hour);
         model.setMin(min);
-        MainActivity.results.add(model);
-        MainActivity.mAdapter.notifyDataSetChanged();
+        RealmTransactionFactory.createReminder(model);
         finish();
     }
 }

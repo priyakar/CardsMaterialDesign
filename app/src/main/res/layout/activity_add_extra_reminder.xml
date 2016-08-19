@@ -17,14 +17,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-    <Button
-        android:id="@+id/set_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Time"
-        android:layout_below="@+id/timePicker"
-        android:layout_alignParentRight="true"
-        android:paddingTop="5dp"/>
 
     <TextView
         android:layout_width="wrap_content"
