@@ -12,12 +12,18 @@ import com.example.priya.cardsmaterialdesign.R;
 import com.example.priya.cardsmaterialdesign.model.ReminderDetailsModel;
 import com.example.priya.cardsmaterialdesign.utils.TimeFormatUtils;
 
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.DataObjectHolder> {
+public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.DataObjectHolder> implements RealmChangeListener {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private RealmResults<ReminderDetailsModel> mDataset;
     LayoutInflater inflater;
+
+    @Override
+    public void onChange(Object element) {
+        notifyDataSetChanged();
+    }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView label;
@@ -65,6 +71,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     public void setResults(RealmResults<ReminderDetailsModel> mDataset) {
         this.mDataset = mDataset;
-        notifyDataSetChanged();
+        this.mDataset.addChangeListener(this);
     }
+
+
 }

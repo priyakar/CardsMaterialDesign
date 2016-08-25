@@ -66,6 +66,7 @@ public class ReminderTimeActivity extends BaseActivity {
         model.setHour(hour);
         model.setMin(min);
         RealmTransactionFactory.createReminder(mAdapter ,model);
+        mAdapter.notifyDataSetChanged();
         finish();
     }
 }

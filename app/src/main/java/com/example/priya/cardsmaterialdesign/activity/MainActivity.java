@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-                                    results.remove(position);
+                                    RealmTransactionFactory.removeReminder(mAdapter, results.get(position).getTitle());
                                     mAdapter.notifyItemRemoved(position);
                                 }
                                 mAdapter.notifyDataSetChanged();
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-                                    results.remove(position);
+                                    RealmTransactionFactory.removeReminder(mAdapter, results.get(position).getTitle());
                                     mAdapter.notifyItemRemoved(position);
                                 }
                                 mAdapter.notifyDataSetChanged();

@@ -32,8 +32,10 @@ public class ReminderPopupActivity extends BaseActivity {
         ButterKnife.inject(this);
         Calendar calendar = Calendar.getInstance();
         reminder = RealmTransactionFactory.getReminderDetails(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
-        reminderTitle.setText(reminder.getTitle());
-        reminderDetails.setText(reminder.getDetails());
+        if (reminder != null) {
+            reminderTitle.setText(reminder.getTitle());
+            reminderDetails.setText(reminder.getDetails());
+        }
 
     }
 
