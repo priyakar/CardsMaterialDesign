@@ -1,7 +1,6 @@
 package com.example.priya.cardsmaterialdesign.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.example.priya.cardsmaterialdesign.R;
@@ -13,7 +12,6 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import io.realm.RealmResults;
 
 public class ReminderPopupActivity extends BaseActivity {
 
@@ -41,7 +39,7 @@ public class ReminderPopupActivity extends BaseActivity {
 
     @OnClick(R.id.dismiss_reminder)
     public void onDismissReminderButtonClick() {
-        RealmTransactionFactory.removeReminder(mAdapter, reminderTitle.getText().toString());
+        RealmTransactionFactory.removeReminder(reminderTitle.getText().toString());
         finish();
     }
 }

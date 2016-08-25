@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
@@ -65,8 +64,8 @@ public class ReminderTimeActivity extends BaseActivity {
         model.setDetails(details);
         model.setHour(hour);
         model.setMin(min);
-        RealmTransactionFactory.createReminder(mAdapter ,model);
-        mAdapter.notifyDataSetChanged();
+        RealmTransactionFactory.createReminder(model);
+        recyclerViewAdapter.notifyDataSetChanged();
         finish();
     }
 }

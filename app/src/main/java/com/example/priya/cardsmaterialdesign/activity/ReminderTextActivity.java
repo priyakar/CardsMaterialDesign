@@ -24,7 +24,6 @@ import butterknife.InjectViews;
 public class ReminderTextActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
-    private String selectedImagePath;
     @InjectViews({R.id.add_title, R.id.add_details})
     List<EditText> addDetails;
     ReminderDetailsModel reminderDetails;
@@ -64,7 +63,7 @@ public class ReminderTextActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
-                selectedImagePath = getPath(selectedImageUri);
+                String selectedImagePath = getPath(selectedImageUri);
                 System.out.println("Image Path : " + selectedImagePath);
                 loadImage.setImageURI(selectedImageUri);
             }

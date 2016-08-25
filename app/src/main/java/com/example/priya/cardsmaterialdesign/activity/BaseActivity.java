@@ -12,13 +12,13 @@ import io.realm.RealmResults;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public MyRecyclerViewAdapter mAdapter;
+    public MyRecyclerViewAdapter recyclerViewAdapter;
     public RealmResults<ReminderDetailsModel> results;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         results = RealmTransactionFactory.getAllReminders();
-        mAdapter = new MyRecyclerViewAdapter(this, results);
+        recyclerViewAdapter = new MyRecyclerViewAdapter(this, results);
     }
 }
